@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nepali Barakhari</title>
+
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f7fa;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+        color: #222;
+    }
+
+    h1 {
+        margin-bottom: 5px;
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        margin-bottom: 30px;
+        color: #444;
+    }
+
+    .section {
+        margin: 25px auto;
+        max-width: 1000px;
+    }
+
+    .section h2 {
+        margin-bottom: 15px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        gap: 10px;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .letter-card {
+        background-color: white;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 15px 5px;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 2rem;
+        min-height: 65px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .letter-card:hover {
+        border-color: #777;
+        transform: translateY(-2px);
+    }
+
+    .letter-card.selected {
+        border-color: #000;
+        background-color: #e9eef5;
+    }
+
+    .equation-section {
+        margin: 40px auto 20px;
+        max-width: 1000px;
+        background-color: white;
+        border-radius: 15px;
+        padding: 30px 20px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .equation-section h2 {
+        margin-bottom: 5px;
+    }
+
+    .instructions {
+        color: #555;
+        font-size: 0.95rem;
+        margin-top: 10px;
+    }
+
+    .main-equation {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 20px;
+        margin-top: 35px;
+        flex-wrap: wrap;
+    }
+
+    .equation-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 125px;
+    }
+
+    .equation-label {
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: #444;
+        min-height: 22px;
+    }
+
+    .equation-english {
+        font-size: 0.8rem;
+        color: #777;
+        min-height: 20px;
+    }
+
+    .audio-button {
+        margin-top: 7px;
+        margin-bottom: 5px;
+
+        border: none;
+        background-color: #f0f0f0;
+        border-radius: 50%;
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 1.2rem;
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+    .audio-button:hover:not(:disabled) {
+        background-color: #ddd;
+        transform: scale(1.05);
+    }
+
+    .audio-button:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+
+    .equation-letter {
+        font-size: 4rem;
+        line-height: 1;
+        min-height: 75px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .operator {
+        font-size: 3rem;
+        font-weight: bold;
+
+        height: 75px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .secondary-equation-section {
+        margin-top: 35px;
+        padding-top: 25px;
+        border-top: 1px solid #ddd;
+    }
+
+    .secondary-title {
+        font-size: 0.95rem;
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 15px;
+    }
+
+    .secondary-equation {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+
+        font-size: 2rem;
+    }
+
+    .secondary-letter {
+        min-width: 60px;
+    }
+
+    .secondary-operator {
+        font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        .grid {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .letter-card {
+            font-size: 1.6rem;
+            min-height: 50px;
+            padding: 10px 3px;
+        }
+
+        .main-equation {
+            gap: 5px;
+        }
+
+        .equation-item {
+            min-width: 90px;
+        }
+
+        .equation-letter {
+            font-size: 3rem;
+        }
+
+        .operator {
+            font-size: 2rem;
+            height: 60px;
+        }
+
+        .secondary-equation {
+            font-size: 1.7rem;
+            gap: 8px;
+        }
+    }
+
+</style>
+
+<h1>नेपाली बाराखरी (Nepali Barakhari)</h1>
+
+<div class="subtitle">
+    Subscribe to @LimitlessLanguage on YouTube!
+</div>
+
+<div class="section">
+
+
+<h2>व्यञ्जन (Consonants)</h2>
+
+<div class="grid" id="consonantGrid"></div>
+
+
+</div>
+
+<div class="section">
+
+
+<h2>स्वर (Vowels)</h2>
+
+<div class="grid" id="vowelGrid"></div>
+
+
+</div>
+
+<div class="equation-section">
+
+
+<h2>बाराखरी (Barakhari)</h2>
+
+<p class="instructions">
+    Choose a व्यञ्जन (consonant) and a स्वर (vowel) to create a
+    बाराखरी (barakhari).
+</p>
+
+<div class="main-equation">
+
+    <div class="equation-item">
+
+        <div class="equation-label">
+            व्यञ्जन (Consonant)
+        </div>
+
+        <div class="equation-english">
+            Selected
+        </div>
+
+        <button
+            class="audio-button"
+            id="consonantAudio"
+            onclick="playSelectedConsonant()"
+            disabled>
+            🔊
+        </button>
+
+        <div
+            class="equation-letter"
+            id="selectedConsonant">
+            —
+        </div>
+
+    </div>
+
+    <div class="operator">
+        +
+    </div>
+
+    <div class="equation-item">
+
+        <div class="equation-label">
+            स्वर (Vowel)
+        </div>
+
+        <div class="equation-english">
+            Selected
+        </div>
+
+        <button
+            class="audio-button"
+            id="vowelAudio"
+            onclick="playSelectedVowel()"
+            disabled>
+            🔊
+        </button>
+
+        <div
+            class="equation-letter"
+            id="selectedVowel">
+            —
+        </div>
+
+    </div>
+
+    <div class="operator">
+        =
+    </div>
+
+    <div class="equation-item">
+
+        <div class="equation-label">
+            बाराखरी (Barakhari)
+        </div>
+
+        <div class="equation-english">
+            Result
+        </div>
+
+        <button
+            class="audio-button"
+            id="barakhariAudio"
+            onclick="playBarakhari()"
+            disabled>
+            🔊
+        </button>
+
+        <div
+            class="equation-letter"
+            id="barakhariResult">
+            —
+        </div>
+
+    </div>
+
+</div>
+
+<div class="secondary-equation-section">
+
+    <div class="secondary-title">
+        व्यञ्जन (Consonant) + स्वर (Vowel) = बाराखरी (Barakhari)
+    </div>
+
+    <div class="secondary-equation">
+
+        <div
+            class="secondary-letter"
+            id="secondaryConsonant">
+            —
+        </div>
+
+        <div class="secondary-operator">
+            +
+        </div>
+
+        <div
+            class="secondary-letter"
+            id="secondaryVowel">
+            —
+        </div>
+
+        <div class="secondary-operator">
+            =
+        </div>
+
+        <div
+            class="secondary-letter"
+            id="secondaryBarakhari">
+            —
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<script>
+
+    const consonants = [
+
+        { letter: "क्", display: "क", sound: "ka" },
+        { letter: "ख्", display: "ख", sound: "kha" },
+        { letter: "ग्", display: "ग", sound: "ga" },
+        { letter: "घ्", display: "घ", sound: "gha" },
+        { letter: "ङ्", display: "ङ", sound: "nga" },
+
+        { letter: "च्", display: "च", sound: "cha" },
+        { letter: "छ्", display: "छ", sound: "chha" },
+        { letter: "ज्", display: "ज", sound: "ja" },
+        { letter: "झ्", display: "झ", sound: "jha" },
+        { letter: "ञ्", display: "ञ", sound: "nya" },
+
+        { letter: "ट्", display: "ट", sound: "ta-retroflex" },
+        { letter: "ठ्", display: "ठ", sound: "tha-retroflex" },
+        { letter: "ड्", display: "ड", sound: "da-retroflex" },
+        { letter: "ढ्", display: "ढ", sound: "dha-retroflex" },
+        { letter: "ण्", display: "ण", sound: "na-retroflex" },
+
+        { letter: "त्", display: "त", sound: "ta" },
+        { letter: "थ्", display: "थ", sound: "tha" },
+        { letter: "द्", display: "द", sound: "da" },
+        { letter: "ध्", display: "ध", sound: "dha" },
+        { letter: "न्", display: "न", sound: "na" },
+
+        { letter: "प्", display: "प", sound: "pa" },
+        { letter: "फ्", display: "फ", sound: "pha" },
+        { letter: "ब्", display: "ब", sound: "ba" },
+        { letter: "भ्", display: "भ", sound: "bha" },
+        { letter: "म्", display: "म", sound: "ma" },
+
+        { letter: "य्", display: "य", sound: "ya" },
+        { letter: "र्", display: "र", sound: "ra" },
+        { letter: "ल्", display: "ल", sound: "la" },
+        { letter: "व्", display: "व", sound: "wa" },
+
+        { letter: "श्", display: "श", sound: "sha" },
+        { letter: "ष्", display: "ष", sound: "ssa" },
+        { letter: "स्", display: "स", sound: "sa" },
+        { letter: "ह्", display: "ह", sound: "ha" },
+
+        { letter: "क्ष्", display: "क्ष", sound: "ksha" },
+        { letter: "त्र्", display: "त्र", sound: "tra" },
+        { letter: "ज्ञ्", display: "ज्ञ", sound: "gya" }
+
+    ];
+
+    const vowels = [
+
+        { letter: "अ", matra: "", sound: "a" },
+        { letter: "आ", matra: "ा", sound: "aa" },
+        { letter: "इ", matra: "ि", sound: "i" },
+        { letter: "ई", matra: "ी", sound: "ee" },
+        { letter: "उ", matra: "ु", sound: "u" },
+        { letter: "ऊ", matra: "ू", sound: "oo" },
+        { letter: "ए", matra: "े", sound: "e" },
+        { letter: "ऐ", matra: "ै", sound: "ai" },
+        { letter: "ओ", matra: "ो", sound: "o" },
+        { letter: "औ", matra: "ौ", sound: "au" },
+        { letter: "अं", matra: "ं", sound: "am" },
+        { letter: "अः", matra: "ः", sound: "aha" }
+
+    ];
+
+    let selectedConsonant = null;
+    let selectedVowel = null;
+
+    const consonantGrid =
+        document.getElementById("consonantGrid");
+
+    consonants.forEach((consonant) => {
+
+        const card = document.createElement("div");
+
+        card.className = "letter-card";
+
+        card.textContent = consonant.display;
+
+        card.onclick = function () {
+
+            selectedConsonant = consonant;
+
+            document
+                .querySelectorAll(
+                    "#consonantGrid .letter-card"
+                )
+                .forEach(card =>
+                    card.classList.remove("selected")
+                );
+
+            card.classList.add("selected");
+
+            updateBarakhari();
+
+        };
+
+        consonantGrid.appendChild(card);
+
+    });
+
+    const vowelGrid =
+        document.getElementById("vowelGrid");
+
+    vowels.forEach((vowel) => {
+
+        const card = document.createElement("div");
+
+        card.className = "letter-card";
+
+        card.textContent = vowel.letter;
+
+        card.onclick = function () {
+
+            selectedVowel = vowel;
+
+            document
+                .querySelectorAll(
+                    "#vowelGrid .letter-card"
+                )
+                .forEach(card =>
+                    card.classList.remove("selected")
+                );
+
+            card.classList.add("selected");
+
+            updateBarakhari();
+
+        };
+
+        vowelGrid.appendChild(card);
+
+    });
+
+    function updateBarakhari() {
+
+        const consonantDisplay =
+            document.getElementById(
+                "selectedConsonant"
+            );
+
+        const vowelDisplay =
+            document.getElementById(
+                "selectedVowel"
+            );
+
+        const resultDisplay =
+            document.getElementById(
+                "barakhariResult"
+            );
+
+        const consonantAudio =
+            document.getElementById(
+                "consonantAudio"
+            );
+
+        const vowelAudio =
+            document.getElementById(
+                "vowelAudio"
+            );
+
+        const barakhariAudio =
+            document.getElementById(
+                "barakhariAudio"
+            );
+
+        if (selectedConsonant) {
+
+            consonantDisplay.textContent =
+                selectedConsonant.display;
+
+            consonantAudio.disabled = false;
+
+        } else {
+
+            consonantDisplay.textContent = "—";
+
+            consonantAudio.disabled = true;
+
+        }
+
+        if (selectedVowel) {
+
+            vowelDisplay.textContent =
+                selectedVowel.letter;
+
+            vowelAudio.disabled = false;
+
+        } else {
+
+            vowelDisplay.textContent = "—";
+
+            vowelAudio.disabled = true;
+
+        }
+
+        if (selectedConsonant && selectedVowel) {
+
+            const result =
+                selectedConsonant.display +
+                selectedVowel.matra;
+
+            resultDisplay.textContent = result;
+
+            barakhariAudio.disabled = false;
+
+        } else {
+
+            resultDisplay.textContent = "—";
+
+            barakhariAudio.disabled = true;
+
+        }
+
+        const secondaryConsonant =
+            document.getElementById(
+                "secondaryConsonant"
+            );
+
+        const secondaryVowel =
+            document.getElementById(
+                "secondaryVowel"
+            );
+
+        const secondaryBarakhari =
+            document.getElementById(
+                "secondaryBarakhari"
+            );
+
+        if (selectedConsonant) {
+
+            secondaryConsonant.textContent =
+                selectedConsonant.letter;
+
+        } else {
+
+            secondaryConsonant.textContent = "—";
+
+        }
+
+        if (selectedVowel) {
+
+            secondaryVowel.textContent =
+                selectedVowel.letter;
+
+        } else {
+
+            secondaryVowel.textContent = "—";
+
+        }
+
+        if (selectedConsonant && selectedVowel) {
+
+            secondaryBarakhari.textContent =
+                selectedConsonant.display +
+                selectedVowel.matra;
+
+        } else {
+
+            secondaryBarakhari.textContent = "—";
+
+        }
+
+    }
+
+    function playAudio(filename) {
+
+        const audio =
+            new Audio("audio/" + filename);
+
+        audio.play().catch(error => {
+
+            console.error(
+                "Audio could not be played:",
+                error
+            );
+
+        });
+
+    }
+
+    function playSelectedConsonant() {
+
+        if (!selectedConsonant) {
+            return;
+        }
+
+        playAudio(
+            selectedConsonant.sound + ".m4a"
+        );
+
+    }
+
+    function playSelectedVowel() {
+
+        if (!selectedVowel) {
+            return;
+        }
+
+        playAudio(
+            selectedVowel.sound + ".m4a"
+        );
+
+    }
+
+    function playBarakhari() {
+
+        if (!selectedConsonant || !selectedVowel) {
+            return;
+        }
+
+        const filename =
+            selectedConsonant.sound +
+            "-" +
+            selectedVowel.sound +
+            ".m4a";
+
+        playAudio(filename);
+
+    }
+
+</script>
+
+</body>
+</html>
